@@ -7,31 +7,41 @@ import co.edu.uptc.parcial.dto.CallDTO;
 import co.edu.uptc.parcial.enums.ETypeCall;
 
 public class CRUD {
-	
-	public static List<CallDTO> calls  = new ArrayList<>();
 
-	public static List<CallDTO> getCalls() {
+	public List<CallDTO> calls;
+	private static CRUD instance;
+
+	public List<CallDTO> getCalls() {
 		return calls;
 	}
 
-	public static void setCalls(List<CallDTO> calls) {
-		CRUD.calls = calls;
+	public void setCalls(List<CallDTO> calls) {
+		this.calls = calls;
 	}
 
-	public CRUD() {
+	private CRUD() {
+		this.calls = new ArrayList<CallDTO>();
 	}
 
-	public static boolean addCall(CallDTO call) {
+	public static CRUD getInstance() {
+		if (instance == null) {
+			instance = new CRUD();
+		}
+		return instance;
+	}
+
+	public boolean addCall(CallDTO call) {
 		if (calls.contains(call)) {
 			return false;
-		} if(!calls.contains(call)) {
+		}
+		if (!calls.contains(call)) {
 			calls.add(call);
 			return true;
 		}
 		return false;
 	}
-	
-	public static double calculateCallValue(CallDTO call) {
+
+	public double calculateCallValue(CallDTO call) {
 		double total = 0;
 
 		ETypeCall etypecall = call.getEtypecall();
@@ -39,86 +49,53 @@ public class CRUD {
 		double minuteValue = call.getValueMinute();
 
 		switch (etypecall) {
-			case MISMO:
-				total = minuteValue * call.getDuration();
-				break;
-			case OTRO:
-				total = minuteValue * call.getDuration();
-				total2 = total * 1.05;
-				break;
-			case NACIONAL:
-				total = minuteValue * call.getDuration();
-				total2 = total * 1.10;
-				break;
-			case INTERNACIONAL:
-				total = minuteValue * call.getDuration();
-				total2 = total * 1.15;
-				break;
+		case MISMO:
+			total = minuteValue * call.getDuration();
+			total2 = total;
+			break;
+		case OTRO:
+			total = minuteValue * call.getDuration();
+			total2 = total * 1.05;
+			break;
+		case NACIONAL:
+			total = minuteValue * call.getDuration();
+			total2 = total * 1.10;
+			break;
+		case INTERNACIONAL:
+			total = minuteValue * call.getDuration();
+			total2 = total * 1.15;
+			break;
 		}
 		return total2;
 	}
-	
-	
-	public static CallDTO getCallInformation(Integer id) {
-		
-		CallDTO found = new CallDTO();
-		
-		
-		if(id != null) {
-			
-			for(CallDTO call : getCalls()) {
-				
-				if(call.getId() ==id) {
-					if(call != null) {
-						found = new CallDTO(call.getNumberCalled(), calculateCallValue(call));
-					
-					
+
+	public CallDTO getCallInformation(Integer id) {
+		if (id != null) {
+			for (CallDTO call : this.getCalls()) {
+				if (call.getId().equals(id)) {
+					return call;
 				}
 			}
-			return found;
-			
-			
-		
+
 		}
-		
-		
+		return null;
 	}
-		return null;	
 }
-}
-		
-	/*
 
-	public double getTotalCallsValue() {
-		double total = 0;
-		for (Cellphone cellphone : mapCellphone.values()) {
-			total += cellphone.getTotalCallsValue();
-		}
-		return total;
-	}
-
-	public int getTotalMinutesConsumed() {
-		int total = 0;
-		for (Cellphone cellphone : mapCellphone.values()) {
-			total += cellphone.getTotalMinutesConsumed();
-		}
-		return total;
-	}
-
-	public List<String> getCallsInformation() {
-		List<String> callsInformation = new ArrayList<>();
-		for (Map.Entry<String, Cellphone> entry : mapCellphone.entrySet()) {
-			String phoneNumber = entry.getKey();
-			callsInformation.add("Cellphone: " + phoneNumber);
-			Cellphone cellphone = entry.getValue();
-			for (Call call : cellphone.getCalls()) {
-				callsInformation.add(call.toString());
-			}
-		}
-		return callsInformation;
-	}*/
-
-	
-	
-	
-
+/*
+ * 
+ * public double getTotalCallsValue() { double total = 0; for (Cellphone
+ * cellphone : mapCellphone.values()) { total += cellphone.getTotalCallsValue();
+ * } return total; }
+ * 
+ * public int getTotalMinutesConsumed() { int total = 0; for (Cellphone
+ * cellphone : mapCellphone.values()) { total +=
+ * cellphone.getTotalMinutesConsumed(); } return total; }
+ * 
+ * public List<String> getCallsInformation() { List<String> callsInformation =
+ * new ArrayList<>(); for (Map.Entry<String, Cellphone> entry :
+ * mapCellphone.entrySet()) { String phoneNumber = entry.getKey();
+ * callsInformation.add("Cellphone: " + phoneNumber); Cellphone cellphone =
+ * entry.getValue(); for (Call call : cellphone.getCalls()) {
+ * callsInformation.add(call.toString()); } } return callsInformation; }
+ */

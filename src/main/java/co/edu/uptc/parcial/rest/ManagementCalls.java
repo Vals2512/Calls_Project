@@ -1,6 +1,8 @@
 package co.edu.uptc.parcial.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.ws.rs.Consumes;
@@ -20,11 +22,7 @@ import co.edu.uptc.parcial.dto.CallDTO;
 
 @Path("/ManagementCalls")
 public class ManagementCalls {
-
-	
-	static {
-		
-	}
+	private CRUD crud = CRUD.getInstance();
 	
 	@POST
 	@Path("/createCall")
@@ -32,7 +30,7 @@ public class ManagementCalls {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	
 	public boolean createBook(CallDTO callDTO) {
-		if(CRUD.addCall(callDTO)) {
+		if(crud.addCall(callDTO)) {
 			return true;
 			
 		}
@@ -42,13 +40,13 @@ public class ManagementCalls {
 	@GET
 	@Path("/getCallByCode")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public CallDTO getCallByCode(@QueryParam("id") Integer id){
-		for(CallDTO callDTO: CRUD.getCalls()) {
-			if(callDTO.getId()== id) {
-				return CRUD.getCallInformation(id);
-			}
-		}
-		return null;
+	public Map<String, String> getCallByCode(@QueryParam("id") Integer id){
+		CallDTO foundCall = crud.getCallInformation(id);
+		Map<String, String> call = new HashMap<String, String>();
+		call.put("numberOrigin", foundCall.getOwnNumber());
+		call.put("numberDestination", foundCall.getNumberCalled());
+		call.put("total", String.valueOf(crud.calculateCallValue(foundCall)));
+		return call;
 	}
 	
 	
