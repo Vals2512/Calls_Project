@@ -64,6 +64,13 @@ public class ManagementCalls {
 	        return crud.calculateTotalMinutesByType(type);
 	    }
 	
+	 @POST
+	    @Path("/getCallsByFilter")
+	    @Produces({ MediaType.APPLICATION_JSON })
+	    @Consumes({ MediaType.APPLICATION_JSON })
+	    public List<CallDTO> getCallsByFilter(CallDTO filter) {
+	        return crud.getCallsByFilter(filter);
+	    }
 	
 	
 }

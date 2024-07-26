@@ -100,6 +100,29 @@ public class CRUD {
 	        }
 	        return totalMinutes;
 	    }
+	 
+	 public List<CallDTO> getCallsByFilter(CallDTO filter) {
+	        List<CallDTO> filteredCalls = new ArrayList<>();
+	        for (CallDTO call : calls) {
+	            boolean matches = true;
+	            if (filter.getId() != null && !filter.getId().equals(call.getId())) {
+	                matches = false;
+	            }
+	            if (filter.getNumberCalled() != null && !filter.getNumberCalled().equals(call.getNumberCalled())) {
+	                matches = false;
+	            }
+	            if (filter.getEtypecall() != null && filter.getEtypecall() != call.getEtypecall()) {
+	                matches = false;
+	            }
+	            if (filter.getDuration() != 0 && filter.getDuration() != call.getDuration()) {
+	                matches = false;
+	            }
+	            if (matches) {
+	                filteredCalls.add(call);
+	            }
+	        }
+	        return filteredCalls;
+	    }
 	
 }
 
