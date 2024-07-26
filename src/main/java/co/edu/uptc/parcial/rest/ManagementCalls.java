@@ -56,6 +56,13 @@ public class ManagementCalls {
 	 public double getTotalCashByType(@QueryParam("type") ETypeCall type) {
 		 return crud.calculateTotalCallsValueByType(type);
 	 }
+	 
+	 @GET
+	    @Path("/getTotalMinutesByType")
+	    @Produces({ MediaType.APPLICATION_JSON })
+	    public int getTotalMinutesByType(@QueryParam("type") ETypeCall type) {
+	        return crud.calculateTotalMinutesByType(type);
+	    }
 	
 	
 	

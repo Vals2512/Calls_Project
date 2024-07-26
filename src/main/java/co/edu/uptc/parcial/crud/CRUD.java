@@ -90,6 +90,16 @@ public class CRUD {
 	        }
 	        return totalValue;
 	    }
+	 
+	 public int calculateTotalMinutesByType(ETypeCall type) {
+	        int totalMinutes = 0;
+	        for (CallDTO call : calls) {
+	            if (type == null || call.getEtypecall() == type) {
+	                totalMinutes += call.getDuration();
+	            }
+	        }
+	        return totalMinutes;
+	    }
 	
 }
 
