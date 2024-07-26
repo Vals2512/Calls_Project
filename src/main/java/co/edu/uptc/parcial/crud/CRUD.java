@@ -80,6 +80,17 @@ public class CRUD {
 		}
 		return null;
 	}
+	
+	 public double calculateTotalCallsValueByType(ETypeCall type) {
+	        double totalValue = 0;
+	        for (CallDTO call : calls) {
+	            if (type == null || call.getEtypecall() == type) {
+	                totalValue += calculateCallValue(call);
+	            }
+	        }
+	        return totalValue;
+	    }
+	
 }
 
 /*
